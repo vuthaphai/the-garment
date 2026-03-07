@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: report-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dbTheGarment
+    username: postgres
+    password: Vp123456
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+server:
+  port: 8085
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

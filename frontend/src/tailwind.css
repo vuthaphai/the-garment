@@ -1,0 +1,4 @@
+/* Tailwind v4 — preflight/normalize only.
+   Angular 21 (esbuild) cannot process @tailwindcss/postcss;
+   utility classes are defined directly in styles.scss instead. */
+@import "tailwindcss/preflight.css";

@@ -1,0 +1,3 @@
+com\thegarment\gateway\ApiGatewayApplication.class
+com\thegarment\gateway\filter\JwtAuthFilter$Config.class
+com\thegarment\gateway\filter\JwtAuthFilter.class

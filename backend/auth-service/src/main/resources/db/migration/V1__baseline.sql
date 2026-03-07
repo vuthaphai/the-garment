@@ -1,0 +1,4 @@
+-- Auth service Flyway migration (shared DB, auth tables only)
+-- This migration is a no-op for auth-service since schema is managed by
+-- the main V1 migration. Flyway baseline is used.
+-- Auth-service reads from 'users' table created in V1__init_schema.sql

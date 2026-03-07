@@ -1,0 +1,49 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-03-07T15:09:14.282+07:00  INFO 23272 --- [auth-service] [           main] c.t.auth.AuthServiceApplication          : Starting AuthServiceApplication v1.0.0-SNAPSHOT using Java 25.0.1 with PID 23272 (C:\Vp\dev\the-garment\backend\auth-service\target\auth-service-1.0.0-SNAPSHOT.jar started by Dell in C:\Vp\dev\the-garment\backend)
+2026-03-07T15:09:14.286+07:00 DEBUG 23272 --- [auth-service] [           main] c.t.auth.AuthServiceApplication          : Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-03-07T15:09:14.287+07:00  INFO 23272 --- [auth-service] [           main] c.t.auth.AuthServiceApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-03-07T15:09:16.641+07:00  INFO 23272 --- [auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-07T15:09:16.783+07:00  INFO 23272 --- [auth-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 125 ms. Found 1 JPA repository interface.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (jar:nested:/C:/Vp/dev/the-garment/backend/auth-service/target/auth-service-1.0.0-SNAPSHOT.jar/!BOOT-INF/lib/tomcat-embed-core-10.1.19.jar!/)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-03-07T15:09:18.332+07:00  INFO 23272 --- [auth-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2026-03-07T15:09:18.369+07:00  INFO 23272 --- [auth-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-07T15:09:18.370+07:00  INFO 23272 --- [auth-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-07T15:09:18.446+07:00  INFO 23272 --- [auth-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-07T15:09:18.448+07:00  INFO 23272 --- [auth-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3989 ms
+2026-03-07T15:09:19.205+07:00  INFO 23272 --- [auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-07T15:09:20.036+07:00  INFO 23272 --- [auth-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5cfed0ba
+2026-03-07T15:09:20.039+07:00  INFO 23272 --- [auth-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-07T15:09:20.109+07:00  INFO 23272 --- [auth-service] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/dbTheGarment (PostgreSQL 18.1)
+2026-03-07T15:09:20.126+07:00  WARN 23272 --- [auth-service] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 18.1 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 16.
+2026-03-07T15:09:20.183+07:00  INFO 23272 --- [auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-03-07T15:09:20.190+07:00  INFO 23272 --- [auth-service] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.043s)
+2026-03-07T15:09:20.231+07:00  INFO 23272 --- [auth-service] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" with baseline ...
+2026-03-07T15:09:20.346+07:00  INFO 23272 --- [auth-service] [           main] o.f.core.internal.command.DbBaseline     : Successfully baselined schema with version: 1
+2026-03-07T15:09:20.376+07:00  INFO 23272 --- [auth-service] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 1
+2026-03-07T15:09:20.413+07:00  INFO 23272 --- [auth-service] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-03-07T15:09:20.610+07:00  INFO 23272 --- [auth-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-07T15:09:20.730+07:00  INFO 23272 --- [auth-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-07T15:09:20.805+07:00  INFO 23272 --- [auth-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-07T15:09:21.601+07:00  INFO 23272 --- [auth-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-07T15:09:21.739+07:00  WARN 23272 --- [auth-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-07T15:09:24.088+07:00  INFO 23272 --- [auth-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-07T15:09:24.178+07:00  INFO 23272 --- [auth-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-07T15:09:25.564+07:00  WARN 23272 --- [auth-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-07T15:09:26.110+07:00  INFO 23272 --- [auth-service] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4010f232, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@24be6e34, org.springframework.security.web.context.SecurityContextHolderFilter@3f910f36, org.springframework.security.web.header.HeaderWriterFilter@7364073b, org.springframework.web.filter.CorsFilter@39f3285d, org.springframework.security.web.authentication.logout.LogoutFilter@3e8eea59, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e2546bf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e572b08, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b312863, org.springframework.security.web.session.SessionManagementFilter@785477e5, org.springframework.security.web.access.ExceptionTranslationFilter@5e3a5f0c, org.springframework.security.web.access.intercept.AuthorizationFilter@24381e4a]
+2026-03-07T15:09:26.886+07:00  INFO 23272 --- [auth-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path ''
+2026-03-07T15:09:26.908+07:00  INFO 23272 --- [auth-service] [           main] c.t.auth.AuthServiceApplication          : Started AuthServiceApplication in 13.514 seconds (process running for 14.176)
+2026-03-07T15:12:31.052+07:00  INFO 23272 --- [auth-service] [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-07T15:12:31.052+07:00  INFO 23272 --- [auth-service] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-07T15:12:31.053+07:00  INFO 23272 --- [auth-service] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

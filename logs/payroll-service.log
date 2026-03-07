@@ -1,0 +1,42 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-03-07T15:09:16.377+07:00  INFO 14432 --- [payroll-service] [           main] c.t.payroll.PayrollServiceApplication    : Starting PayrollServiceApplication v1.0.0-SNAPSHOT using Java 25.0.1 with PID 14432 (C:\Vp\dev\the-garment\backend\payroll-service\target\payroll-service-1.0.0-SNAPSHOT.jar started by Dell in C:\Vp\dev\the-garment\backend)
+2026-03-07T15:09:16.414+07:00  INFO 14432 --- [payroll-service] [           main] c.t.payroll.PayrollServiceApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-03-07T15:09:18.683+07:00  INFO 14432 --- [payroll-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-07T15:09:18.741+07:00  INFO 14432 --- [payroll-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 0 JPA repository interfaces.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (jar:nested:/C:/Vp/dev/the-garment/backend/payroll-service/target/payroll-service-1.0.0-SNAPSHOT.jar/!BOOT-INF/lib/tomcat-embed-core-10.1.19.jar!/)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-03-07T15:09:20.678+07:00  INFO 14432 --- [payroll-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2026-03-07T15:09:20.708+07:00  INFO 14432 --- [payroll-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-07T15:09:20.709+07:00  INFO 14432 --- [payroll-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-07T15:09:20.778+07:00  INFO 14432 --- [payroll-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-07T15:09:20.780+07:00  INFO 14432 --- [payroll-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4183 ms
+2026-03-07T15:09:21.293+07:00  INFO 14432 --- [payroll-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-07T15:09:21.584+07:00  INFO 14432 --- [payroll-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-07T15:09:21.679+07:00  INFO 14432 --- [payroll-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-07T15:09:22.442+07:00  INFO 14432 --- [payroll-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-07T15:09:22.555+07:00  INFO 14432 --- [payroll-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-07T15:09:22.980+07:00  INFO 14432 --- [payroll-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5546e754
+2026-03-07T15:09:22.984+07:00  INFO 14432 --- [payroll-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-07T15:09:23.817+07:00  INFO 14432 --- [payroll-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-07T15:09:23.833+07:00  INFO 14432 --- [payroll-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-07T15:09:24.247+07:00  WARN 14432 --- [payroll-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-07T15:09:25.630+07:00  WARN 14432 --- [payroll-service] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 2785a5fa-257f-4163-92a6-f45df968157f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-03-07T15:09:25.843+07:00  INFO 14432 --- [payroll-service] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@79631db0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@f837c11, org.springframework.security.web.context.SecurityContextHolderFilter@400e741, org.springframework.security.web.header.HeaderWriterFilter@468f2a6f, org.springframework.web.filter.CorsFilter@1aca6dc3, org.springframework.security.web.csrf.CsrfFilter@297dff3a, org.springframework.security.web.authentication.logout.LogoutFilter@7ca29311, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5cb6abc8, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@38f63756, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3731e8b6, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@5895c065, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@35744f8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6fbcc078, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@565efd7d, org.springframework.security.web.access.ExceptionTranslationFilter@441016d6, org.springframework.security.web.access.intercept.AuthorizationFilter@4f98ac31]
+2026-03-07T15:09:25.993+07:00  INFO 14432 --- [payroll-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8084 (http) with context path ''
+2026-03-07T15:09:26.010+07:00  INFO 14432 --- [payroll-service] [           main] c.t.payroll.PayrollServiceApplication    : Started PayrollServiceApplication in 10.759 seconds (process running for 11.741)
