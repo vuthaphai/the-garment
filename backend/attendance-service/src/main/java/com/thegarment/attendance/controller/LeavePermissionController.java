@@ -2,7 +2,7 @@ package com.thegarment.attendance.controller;
 
 import com.thegarment.attendance.dto.ApiResponse;
 import com.thegarment.attendance.entity.LeavePermission;
-import com.thegarment.attendance.repository.LeavePermissionRepository;
+import com.thegarment.attendance.service.LeavePermissionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @Tag(name = "Leave Permission", description = "Leave and permission management")
 public class LeavePermissionController {
 
-    private final LeavePermissionRepository repository;
+    private final LeavePermissionService leavePermissionService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<LeavePermission>>> search(
@@ -30,25 +30,24 @@ public class LeavePermissionController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(ApiResponse.success(
-                repository.search(empCardNo, dateFrom, dateTo, PageRequest.of(page, size))));
+                leavePermissionService.search(empCardNo, dateFrom, dateTo, PageRequest.of(page, size))));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<LeavePermission>> create(@RequestBody LeavePermission permission) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Created", repository.save(permission)));
+                .body(ApiResponse.success("Created", leavePermissionService.create(permission)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<LeavePermission>> update(
             @PathVariable Long id, @RequestBody LeavePermission permission) {
-        permission.setId(id);
-        return ResponseEntity.ok(ApiResponse.success("Updated", repository.save(permission)));
+        return ResponseEntity.ok(ApiResponse.success("Updated", leavePermissionService.update(id, permission)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        leavePermissionService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Deleted", null));
     }
 }

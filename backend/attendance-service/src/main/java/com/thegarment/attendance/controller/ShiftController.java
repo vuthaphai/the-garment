@@ -2,7 +2,7 @@ package com.thegarment.attendance.controller;
 
 import com.thegarment.attendance.dto.ApiResponse;
 import com.thegarment.attendance.entity.Shift;
-import com.thegarment.attendance.repository.ShiftRepository;
+import com.thegarment.attendance.service.ShiftService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,40 +17,33 @@ import java.util.List;
 @Tag(name = "Shift", description = "Shift management")
 public class ShiftController {
 
-    private final ShiftRepository repository;
+    private final ShiftService shiftService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Shift>>> findAll(
             @RequestParam(required = false) String search) {
-        List<Shift> result = (search == null || search.isBlank())
-                ? repository.findAll()
-                : repository.findByNativeNameContainingIgnoreCaseOrForeignNameContainingIgnoreCase(
-                        search, search);
-        return ResponseEntity.ok(ApiResponse.success(result));
+        return ResponseEntity.ok(ApiResponse.success(shiftService.findAll(search)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Shift>> findById(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(s -> ResponseEntity.ok(ApiResponse.success(s)))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(ApiResponse.success(shiftService.findById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Shift>> create(@RequestBody Shift shift) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Created", repository.save(shift)));
+                .body(ApiResponse.success("Created", shiftService.create(shift)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Shift>> update(@PathVariable Long id, @RequestBody Shift shift) {
-        shift.setId(id);
-        return ResponseEntity.ok(ApiResponse.success("Updated", repository.save(shift)));
+        return ResponseEntity.ok(ApiResponse.success("Updated", shiftService.update(id, shift)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        shiftService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Deleted", null));
     }
 }

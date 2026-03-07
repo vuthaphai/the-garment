@@ -2,7 +2,7 @@ package com.thegarment.hr.controller;
 
 import com.thegarment.hr.dto.ApiResponse;
 import com.thegarment.hr.entity.Group;
-import com.thegarment.hr.repository.GroupRepository;
+import com.thegarment.hr.service.GroupService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.List;
 @Tag(name = "Group", description = "Group lookup")
 public class GroupController {
 
-    private final GroupRepository repository;
+    private final GroupService groupService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<Group>>> findAll() {
-        return ResponseEntity.ok(ApiResponse.success(repository.findAll()));
+        return ResponseEntity.ok(ApiResponse.success(groupService.findAll()));
     }
 }
