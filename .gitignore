@@ -1,10 +1,10 @@
 # ─── Angular / Node ───────────────────────────────────────────────────────────
-frontend/node_modules/
-frontend/dist/
-frontend/.angular/
-frontend/.cache/
-frontend/coverage/
-frontend/.npm/
+frontend/the-garment-web-app/node_modules/
+frontend/the-garment-web-app/dist/
+frontend/the-garment-web-app/.angular/
+frontend/the-garment-web-app/.cache/
+frontend/the-garment-web-app/coverage/
+frontend/the-garment-web-app/.npm/
 *.js.map
 
 # ─── Java / Maven (Spring Boot microservices) ─────────────────────────────────

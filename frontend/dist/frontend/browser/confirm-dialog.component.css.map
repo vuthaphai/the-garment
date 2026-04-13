@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;f34daffd0d8bf453dd611f25e8873333077bb53ceeb370ea6d2e520ce429a895;C:/Vp/dev/the-garment/frontend/src/app/shared/components/confirm-dialog/confirm-dialog.component.ts"],
-  "sourcesContent": ["\n    .confirm-dialog { padding: 1.5rem; min-width: 320px; max-width: 420px; }\n    .confirm-body { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }\n    .confirm-icon {\n      width: 40px; height: 40px; border-radius: 50%;\n      background: #fef2f2; display: flex; align-items: center; justify-content: center; flex-shrink: 0;\n    }\n    .confirm-icon mat-icon { color: #ef4444; font-size: 20px; width: 20px; height: 20px; }\n    .confirm-text h2 { font-size: 1rem; font-weight: 600; color: #1e293b; margin: 0 0 .35rem; }\n    .confirm-text p  { font-size: .875rem; color: #64748b; margin: 0; line-height: 1.5; }\n    .confirm-actions { display: flex; justify-content: flex-end; gap: .75rem; }\n  "],
-  "mappings": ";AACI,CAAC;AAAiB,WAAS;AAAQ,aAAW;AAAO,aAAW;AAAO;AACvE,CAAC;AAAe,WAAS;AAAM,OAAK;AAAM,eAAa;AAAY,iBAAe;AAAQ;AAC1F,CAAC;AACC,SAAO;AAAM,UAAQ;AAAM,iBAAe;AAC1C,cAAY;AAAS,WAAS;AAAM,eAAa;AAAQ,mBAAiB;AAAQ,eAAa;AACjG;AACA,CAJC,aAIa;AAAW,SAAO;AAAS,aAAW;AAAM,SAAO;AAAM,UAAQ;AAAM;AACrF,CAAC,aAAa;AAAK,aAAW;AAAM,eAAa;AAAK,SAAO;AAAS,UAAQ,EAAE,EAAE;AAAQ;AAC1F,CADC,aACa;AAAK,aAAW;AAAS,SAAO;AAAS,UAAQ;AAAG,eAAa;AAAK;AACpF,CAAC;AAAkB,WAAS;AAAM,mBAAiB;AAAU,OAAK;AAAQ;",
-  "names": []
-}

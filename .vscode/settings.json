@@ -1,7 +1,7 @@
 {
     "snyk.advanced.autoSelectOrganization": true,
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
 
     // Format on save
     "editor.formatOnSave": true,

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;213922da32db4caeaaab2c24372a7aa00fb4636bc11fd324f6997183ea33b577;C:/Vp/dev/the-garment/frontend/src/app/features/hr/group-position/group-position-list/group-position-list.component.ts"],
-  "sourcesContent": ["\n    .badge-blue { display:inline-flex;align-items:center;padding:.2rem .65rem;border-radius:99px;font-size:.7rem;font-weight:600;background:#e0e7ff;color:#3730a3; }\n  "],
-  "mappings": ";AACI,CAAC;AAAa,WAAQ;AAAY,eAAY;AAAO,WAAQ,MAAM;AAAO,iBAAc;AAAK,aAAU;AAAM,eAAY;AAAI,cAAW;AAAQ,SAAM;AAAS;",
-  "names": []
-}

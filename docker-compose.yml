@@ -1,7 +1,7 @@
 version: "3.9"
 
 networks:
-  garment-network:
+  tg-network:
     driver: bridge
 
 volumes:
@@ -11,155 +11,78 @@ services:
   # ─── Database ──────────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: garment-postgres
+    container_name: tg-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Vp123456
-      POSTGRES_DB: dbTheGarment
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: the_garment_dev
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/V1__init_schema.sql:/docker-entrypoint-initdb.d/V1__init_schema.sql
     networks:
-      - garment-network
+      - tg-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d dbTheGarment"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d the_garment_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # ─── BFF Service ─────────────────────────────────────────────────────────────
-  thegarment-bff-service:
+  # ─── Data Adapter Service ─────────────────────────────────────────────────
+  tg-data-adapter:
     build:
-      context: ./backend/api-gateway
+      context: ./backend/tg-data-adapter-service
       dockerfile: Dockerfile
-    container_name: garment-bff-service
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - garment-network
-    depends_on:
-      - auth-service
-      - hr-service
-      - attendance-service
-      - payroll-service
-      - report-service
-
-  # ─── Auth Service ────────────────────────────────────────────────────────────
-  auth-service:
-    build:
-      context: ./backend/auth-service
-      dockerfile: Dockerfile
-    container_name: garment-auth-service
-    restart: unless-stopped
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dbTheGarment
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Vp123456
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - garment-network
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  # ─── HR Service ──────────────────────────────────────────────────────────────
-  hr-service:
-    build:
-      context: ./backend/hr-service
-      dockerfile: Dockerfile
-    container_name: garment-hr-service
+    container_name: tg-data-adapter
     restart: unless-stopped
     ports:
       - "8082:8082"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dbTheGarment
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Vp123456
-      - SPRING_PROFILES_ACTIVE=docker
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: the_garment_dev
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
     networks:
-      - garment-network
+      - tg-network
     depends_on:
       postgres:
         condition: service_healthy
 
-  # ─── Attendance Service ───────────────────────────────────────────────────────
-  attendance-service:
+  # ─── BFF Service ─────────────────────────────────────────────────────────
+  tg-bff:
     build:
-      context: ./backend/attendance-service
+      context: ./backend/tg-bff-service
       dockerfile: Dockerfile
-    container_name: garment-attendance-service
+    container_name: tg-bff
     restart: unless-stopped
     ports:
-      - "8083:8083"
+      - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dbTheGarment
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Vp123456
-      - SPRING_PROFILES_ACTIVE=docker
+      SPRING_PROFILES_ACTIVE: prod
+      DATA_ADAPTER_URL: http://tg-data-adapter:8082
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_EXPIRY: 3600000
+      JWT_REFRESH_EXPIRY: 86400000
     networks:
-      - garment-network
+      - tg-network
     depends_on:
-      postgres:
-        condition: service_healthy
+      - tg-data-adapter
 
-  # ─── Payroll Service ──────────────────────────────────────────────────────────
-  payroll-service:
+  # ─── Frontend ─────────────────────────────────────────────────────────────
+  tg-frontend:
     build:
-      context: ./backend/payroll-service
+      context: ./frontend/the-garment-web-app
       dockerfile: Dockerfile
-    container_name: garment-payroll-service
+    container_name: tg-frontend
     restart: unless-stopped
     ports:
-      - "8084:8084"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dbTheGarment
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Vp123456
-      - SPRING_PROFILES_ACTIVE=docker
+      - "80:80"
     networks:
-      - garment-network
+      - tg-network
     depends_on:
-      postgres:
-        condition: service_healthy
+      - tg-bff
 
-  # ─── Report Service ───────────────────────────────────────────────────────────
-  report-service:
-    build:
-      context: ./backend/report-service
-      dockerfile: Dockerfile
-    container_name: garment-report-service
-    restart: unless-stopped
-    ports:
-      - "8085:8085"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dbTheGarment
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Vp123456
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - garment-network
-    depends_on:
-      postgres:
-        condition: service_healthy
 
-  # ─── Frontend (Nginx) ────────────────────────────────────────────────────────
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: garment-frontend
-    restart: unless-stopped
-    ports:
-      - "4200:80"
-    networks:
-      - garment-network
-    depends_on:
-      - api-gateway

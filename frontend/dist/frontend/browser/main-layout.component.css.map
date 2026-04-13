@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;26dfd6ec32e362a951065448de832cf912baba3902db0f93d464d7e3be447938;C:/Vp/dev/the-garment/frontend/src/app/layout/main-layout/main-layout.component.ts"],
-  "sourcesContent": ["\n    .app-shell {\n      display: flex;\n      height: 100vh;\n      overflow: hidden;\n      background: var(--color-bg, #f1f5f9);\n    }\n    .app-content {\n      flex: 1;\n      display: flex;\n      flex-direction: column;\n      overflow: hidden;\n    }\n    .app-main {\n      flex: 1;\n      overflow-y: auto;\n      padding: 1.75rem 2rem;\n    }\n  "],
-  "mappings": ";AACI,CAAC;AACC,WAAS;AACT,UAAQ;AACR,YAAU;AACV,cAAY,IAAI,UAAU,EAAE;AAC9B;AACA,CAAC;AACC,QAAM;AACN,WAAS;AACT,kBAAgB;AAChB,YAAU;AACZ;AACA,CAAC;AACC,QAAM;AACN,cAAY;AACZ,WAAS,QAAQ;AACnB;",
-  "names": []
-}

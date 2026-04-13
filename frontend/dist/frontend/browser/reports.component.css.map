@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;e0426e55be9b47920032c14ab097fb3512a0831a6e32001a6b088482a9cb504e;C:/Vp/dev/the-garment/frontend/src/app/features/reports/reports.component.ts"],
-  "sourcesContent": ["\n    .coming-soon {\n      display: flex; flex-direction: column; align-items: center; justify-content: center;\n      height: 60vh; gap: .75rem; color: #94a3b8;\n    }\n    .coming-soon-icon {\n      width: 80px; height: 80px; border-radius: 24px;\n      background: #f1f5f9; display: flex; align-items: center; justify-content: center;\n      margin-bottom: .5rem;\n    }\n    .coming-soon-icon mat-icon { font-size: 40px; width: 40px; height: 40px; color: #94a3b8; }\n    .coming-soon h2 { font-size: 1.5rem; font-weight: 600; color: #475569; margin: 0; }\n    .coming-soon p  { font-size: .95rem; margin: 0; }\n  "],
-  "mappings": ";AACI,CAAC;AACC,WAAS;AAAM,kBAAgB;AAAQ,eAAa;AAAQ,mBAAiB;AAC7E,UAAQ;AAAM,OAAK;AAAQ,SAAO;AACpC;AACA,CAAC;AACC,SAAO;AAAM,UAAQ;AAAM,iBAAe;AAC1C,cAAY;AAAS,WAAS;AAAM,eAAa;AAAQ,mBAAiB;AAC1E,iBAAe;AACjB;AACA,CALC,iBAKiB;AAAW,aAAW;AAAM,SAAO;AAAM,UAAQ;AAAM,SAAO;AAAS;AACzF,CAVC,YAUY;AAAK,aAAW;AAAQ,eAAa;AAAK,SAAO;AAAS,UAAQ;AAAG;AAClF,CAXC,YAWY;AAAK,aAAW;AAAQ,UAAQ;AAAG;",
-  "names": []
-}

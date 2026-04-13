@@ -1,0 +1,62 @@
+package com.thegarment.adapter.dto.response;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+public record EmployeeResponse(
+        Long id,
+        String empCardNo,
+        String serialCardNo,
+        String nativeName,
+        String foreignName,
+        LocalDate dateOfBirth,
+        Long nationalityId,
+        String nationalityName,
+        String sex,
+        String socialSecurity,
+        String electionCard,
+        String placeOfBirth,
+        Long cityId,
+        String cityName,
+        String maritalStatus,
+        String spouseName,
+        Integer childrenCount,
+        String email,
+        String currentAddress,
+        String description,
+        String tel,
+        String driverLicense,
+        Boolean healthCheckUp,
+        Boolean workBook,
+        Integer fingerPrint,
+        String familyListNum,
+        Integer anlOldUsed,
+        Long groupPositionId,
+        String groupPositionName,
+        Long groupId,
+        String groupName,
+        Long positionId,
+        String positionName,
+        LocalDate dateJoined,
+        LocalDate dateResigned,
+        String paymentType,
+        String currency,
+        BigDecimal salary,
+        String photoPath,
+        Boolean active,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        List<ContractItem> contracts
+) {
+    public record ContractItem(
+            Long id,
+            Long contractTypeId,
+            String contractTypeName,
+            LocalDate fromDate,
+            LocalDate toDate,
+            Integer months,
+            LocalDateTime createdAt
+    ) {}
+}
