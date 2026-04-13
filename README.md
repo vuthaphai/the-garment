@@ -52,6 +52,8 @@ docker compose up --build
 # Swagger: http://localhost:8080/swagger-ui.html
 ```
 
+Postgres creates the application database from [database/init.sql](database/init.sql) on first container initialization. Liquibase then creates tables and seed data when `tg-data-adapter-service` starts.
+
 Default credentials: **admin / Admin@123**
 
 ---
@@ -62,8 +64,8 @@ Default credentials: **admin / Admin@123**
 
 ```bash
 docker run -d --name tg-pg \
-  -e POSTGRES_DB=the_garment_dev \
   -e POSTGRES_PASSWORD=postgres \
+  -v "$PWD/database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro" \
   -p 5432:5432 postgres:16-alpine
 ```
 
@@ -139,8 +141,6 @@ the-garment/
 │   ├── pom.xml                 # Parent POM (Java 21, Spring Boot 3.3.4)
 │   ├── tg-bff-service/         # Port 8080 — JWT, security, proxy
 │   └── tg-data-adapter-service/ # Port 8082 — R2DBC + Liquibase
-├── database/
-│   └── V1__init_schema.sql     # Legacy schema reference
 ├── frontend/
 │   └── the-garment-web-app/
 │       ├── src/app/
@@ -153,6 +153,11 @@ the-garment/
 ---
 
 ## Module Overview
+
+Database schema and seed data are managed by Liquibase in
+`backend/tg-data-adapter-service/src/main/resources/db/changelog/`.
+Database creation for Docker-based local development is bootstrapped by
+`database/init.sql`.
 
 ### HR (`/hr`)
 
