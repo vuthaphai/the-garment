@@ -13,7 +13,12 @@ export const routes: Routes = [
       import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'hr/employees', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/home/dashboard-home.component').then(m => m.DashboardHomeComponent)
+      },
       {
         path: 'hr',
         children: [
@@ -53,12 +58,6 @@ export const routes: Routes = [
         path: 'attendance',
         children: [
           {
-            path: 'shifts',
-            loadComponent: () =>
-              import('./features/attendance/shift/shift-list/shift-list.component')
-                .then(m => m.ShiftListComponent)
-          },
-          {
             path: 'controllers',
             loadComponent: () =>
               import('./features/attendance/controller/controller-list/controller-list.component')
@@ -75,12 +74,6 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/attendance/daily/daily-attendance/daily-attendance.component')
                 .then(m => m.DailyAttendanceComponent)
-          },
-          {
-            path: 'permissions',
-            loadComponent: () =>
-              import('./features/attendance/permission/permission-list/permission-list.component')
-                .then(m => m.PermissionListComponent)
           }
         ]
       },
@@ -97,12 +90,6 @@ export const routes: Routes = [
       {
         path: 'settings',
         children: [
-          {
-            path: 'company',
-            loadComponent: () =>
-              import('./features/settings/company/company-settings/company-settings.component')
-                .then(m => m.CompanySettingsComponent)
-          },
           {
             path: 'holidays',
             loadComponent: () =>

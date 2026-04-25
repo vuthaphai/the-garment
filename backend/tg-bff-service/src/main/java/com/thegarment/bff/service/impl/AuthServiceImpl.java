@@ -1,5 +1,6 @@
 package com.thegarment.bff.service.impl;
 
+import com.thegarment.bff.dto.CurrentUserResponse;
 import com.thegarment.bff.dto.LoginRequest;
 import com.thegarment.bff.dto.LoginResponse;
 import com.thegarment.bff.dto.RefreshTokenRequest;
@@ -11,9 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +38,11 @@ public class AuthServiceImpl implements AuthService {
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         request.username(), request.password()))
                 .map(auth -> {
-                    String role = auth.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .map(a -> a.replace("ROLE_", ""))
-                            .findFirst().orElse("VIEWER");
-                    String accessToken = jwtTokenProvider.generateAccessToken(request.username(), role);
+                    List<String> roles = extractRoles(auth.getAuthorities());
+                    String accessToken = jwtTokenProvider.generateAccessToken(request.username(), roles);
                     String refreshToken = jwtTokenProvider.generateRefreshToken(request.username());
                     return LoginResponse.of(accessToken, refreshToken, accessTokenExpiry / 1000,
-                            request.username(), role);
+                            request.username(), roles);
                 });
     }
 
@@ -51,14 +54,37 @@ public class AuthServiceImpl implements AuthService {
         String username = jwtTokenProvider.getUsernameFromToken(request.refreshToken());
         return userDetailsService.findByUsername(username)
                 .map(userDetails -> {
-                    String role = userDetails.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .map(a -> a.replace("ROLE_", ""))
-                            .findFirst().orElse("VIEWER");
-                    String newAccessToken = jwtTokenProvider.generateAccessToken(username, role);
+                                        List<String> roles = extractRoles(userDetails.getAuthorities());
+                                        String newAccessToken = jwtTokenProvider.generateAccessToken(username, roles);
                     String newRefreshToken = jwtTokenProvider.generateRefreshToken(username);
                     return LoginResponse.of(newAccessToken, newRefreshToken,
-                            accessTokenExpiry / 1000, username, role);
+                                                        accessTokenExpiry / 1000, username, roles);
                 });
     }
+
+        @Override
+        public Mono<Void> logout() {
+                // Stateless JWT logout: client discards token; server can add blacklist later if needed.
+                return Mono.empty();
+        }
+
+        @Override
+        public Mono<CurrentUserResponse> currentUser() {
+                return ReactiveSecurityContextHolder.getContext()
+                                .map(ctx -> ctx.getAuthentication())
+                                .filter(auth -> auth != null && auth.isAuthenticated())
+                                .map(auth -> new CurrentUserResponse(auth.getName(), extractRoles(auth.getAuthorities())))
+                                .switchIfEmpty(Mono.error(new BusinessException("Unauthenticated user")));
+        }
+
+        private List<String> extractRoles(Iterable<? extends GrantedAuthority> authorities) {
+                List<String> roles = new ArrayList<>();
+                for (GrantedAuthority authority : authorities) {
+                        String role = authority.getAuthority().replace("ROLE_", "").trim().toUpperCase();
+                        if (StringUtils.hasText(role) && !roles.contains(role)) {
+                                roles.add(role);
+                        }
+                }
+                return roles.isEmpty() ? List.of("VIEWER") : roles;
+        }
 }

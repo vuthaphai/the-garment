@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -27,10 +28,12 @@ public class JwtTokenProvider {
         this.refreshTokenExpiry = refreshTokenExpiry;
     }
 
-    public String generateAccessToken(String username, String role) {
+    public String generateAccessToken(String username, List<String> roles) {
+        List<String> normalizedRoles = (roles == null || roles.isEmpty()) ? List.of("VIEWER") : roles;
         return Jwts.builder()
                 .subject(username)
-                .claim("role", role)
+                .claim("roles", normalizedRoles)
+                .claim("role", normalizedRoles.get(0))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpiry))
                 .signWith(secretKey)
@@ -68,7 +71,13 @@ public class JwtTokenProvider {
         return parseToken(token).getSubject();
     }
 
-    public String getRoleFromToken(String token) {
-        return parseToken(token).get("role", String.class);
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = parseToken(token);
+        Object rolesClaim = claims.get("roles");
+        if (rolesClaim instanceof List<?> roles && !roles.isEmpty()) {
+            return roles.stream().map(String::valueOf).toList();
+        }
+        String role = claims.get("role", String.class);
+        return role == null || role.isBlank() ? List.of("VIEWER") : List.of(role);
     }
 }

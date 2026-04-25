@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -23,7 +24,10 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
                 .map(userResponse -> User.builder()
                         .username(userResponse.username())
                         .password(userResponse.password())
-                        .authorities(List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role())))
+                .authorities(userResponse.roles() == null ? Collections.<SimpleGrantedAuthority>emptyList()
+                    : userResponse.roles().stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .toList())
                         .accountExpired(false)
                         .accountLocked(false)
                         .credentialsExpired(false)

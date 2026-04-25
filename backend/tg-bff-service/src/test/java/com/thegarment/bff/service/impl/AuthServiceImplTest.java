@@ -50,9 +50,9 @@ class AuthServiceImplTest {
         var auth = new UsernamePasswordAuthenticationToken(
                 "admin",
                 "secret",
-                List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+                List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_HR")));
         when(authenticationManager.authenticate(any())).thenReturn(Mono.just(auth));
-        when(jwtTokenProvider.generateAccessToken("admin", "ADMIN")).thenReturn("access-token");
+        when(jwtTokenProvider.generateAccessToken("admin", List.of("ADMIN", "HR"))).thenReturn("access-token");
         when(jwtTokenProvider.generateRefreshToken("admin")).thenReturn("refresh-token");
 
         StepVerifier.create(authService.login(new LoginRequest("admin", "secret")))
@@ -60,6 +60,7 @@ class AuthServiceImplTest {
                         && response.refreshToken().equals("refresh-token")
                         && response.username().equals("admin")
                         && response.role().equals("ADMIN")
+                        && response.roles().equals(List.of("ADMIN", "HR"))
                         && response.expiresIn() == 3600)
                 .verifyComplete();
 
@@ -87,13 +88,14 @@ class AuthServiceImplTest {
         when(jwtTokenProvider.validateToken("refresh-token")).thenReturn(true);
         when(jwtTokenProvider.getUsernameFromToken("refresh-token")).thenReturn("admin");
         when(userDetailsService.findByUsername("admin")).thenReturn(Mono.just(userDetails));
-        when(jwtTokenProvider.generateAccessToken("admin", "MANAGER")).thenReturn("new-access");
+        when(jwtTokenProvider.generateAccessToken("admin", List.of("MANAGER"))).thenReturn("new-access");
         when(jwtTokenProvider.generateRefreshToken("admin")).thenReturn("new-refresh");
 
         StepVerifier.create(authService.refresh(new RefreshTokenRequest("refresh-token")))
                 .expectNextMatches(response -> response.accessToken().equals("new-access")
                         && response.refreshToken().equals("new-refresh")
-                        && response.role().equals("MANAGER"))
+                        && response.role().equals("MANAGER")
+                        && response.roles().equals(List.of("MANAGER")))
                 .verifyComplete();
     }
 }

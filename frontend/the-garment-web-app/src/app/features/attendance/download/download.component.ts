@@ -20,17 +20,17 @@ import { NotificationService } from '@core/services/notification.service';
     <div class="p-6">
       <h1 class="page-title">Download Data</h1>
       <p class="text-slate-500 mb-6 text-sm">
-        Download attendance scan data from biometric controllers over the network.
+        Trigger the latest attendance download job for registered fingerprint devices.
       </p>
 
       <div class="card max-w-md">
-        <h3 class="text-base font-semibold mb-4 text-slate-700">Download from Controller</h3>
+        <h3 class="text-base font-semibold mb-4 text-slate-700">Registered Fingerprint Devices</h3>
 
         <mat-form-field appearance="outline">
-          <mat-label>Select Controller</mat-label>
+          <mat-label>Review Device</mat-label>
           <mat-select [(ngModel)]="selectedId">
-            @for (c of controllers(); track c.id) {
-              <mat-option [value]="c.id">{{ c.controllerName }}</mat-option>
+            @for (c of fingerPrinters(); track c.id) {
+              <mat-option [value]="c.id">{{ c.machineName || c.name || ('Device #' + c.id) }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -42,15 +42,23 @@ import { NotificationService } from '@core/services/notification.service';
 
         <div class="flex gap-3 mt-4">
           <button mat-flat-button color="primary"
-                  [disabled]="!selectedId || downloading()"
+                  [disabled]="downloading()"
                   (click)="download()">
             <mat-icon>cloud_download</mat-icon>
             Download
           </button>
-          <button mat-stroked-button (click)="loadControllers()">
+          <button mat-stroked-button (click)="loadFingerPrinters()">
             <mat-icon>refresh</mat-icon> Refresh
           </button>
         </div>
+
+        @if (selectedFingerPrinter()) {
+          <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+            <div><strong>IP:</strong> {{ selectedFingerPrinter()?.ipAddress || 'N/A' }}</div>
+            <div><strong>Port:</strong> {{ selectedFingerPrinter()?.port || 'N/A' }}</div>
+            <div><strong>Location:</strong> {{ selectedFingerPrinter()?.location || 'N/A' }}</div>
+          </div>
+        }
 
         @if (lastResult()) {
           <div class="mt-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
@@ -63,7 +71,7 @@ import { NotificationService } from '@core/services/notification.service';
   `
 })
 export class DownloadComponent {
-  controllers = signal<any[]>([]);
+  fingerPrinters = signal<any[]>([]);
   selectedId: number | null = null;
   downloading = signal(false);
   lastResult = signal('');
@@ -72,23 +80,26 @@ export class DownloadComponent {
     private svc: AttendanceService,
     private notify: NotificationService
   ) {
-    this.loadControllers();
+    this.loadFingerPrinters();
   }
 
-  loadControllers() {
-    this.svc.getControllers().subscribe(res => {
-      if (res.success) this.controllers.set(res.data);
+  selectedFingerPrinter() {
+    return this.fingerPrinters().find(item => item.id === this.selectedId) ?? null;
+  }
+
+  loadFingerPrinters() {
+    this.svc.getFingerPrinters().subscribe(res => {
+      this.fingerPrinters.set(res);
     });
   }
 
   download() {
-    if (!this.selectedId) return;
     this.downloading.set(true);
     this.lastResult.set('');
-    this.svc.downloadData(this.selectedId).subscribe({
+    this.svc.downloadAttendanceData().subscribe({
       next: res => {
         this.downloading.set(false);
-        this.lastResult.set(res.data ?? 'Download initiated successfully');
+        this.lastResult.set(res ?? 'Download initiated successfully');
         this.notify.success('Download initiated');
       },
       error: () => {

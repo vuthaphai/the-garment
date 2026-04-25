@@ -1,5 +1,6 @@
 package com.thegarment.adapter.controller;
 
+import com.thegarment.adapter.dto.response.UserAuthResponse;
 import com.thegarment.adapter.dto.response.UserResponse;
 import com.thegarment.adapter.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,10 @@ public class UserController {
     @GetMapping("/username/{username}")
     public Mono<ResponseEntity<UserResponse>> findByUsername(@PathVariable String username) {
         return userService.findByUsername(username).map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/auth/{username}")
+    public Mono<ResponseEntity<UserAuthResponse>> findAuthByUsername(@PathVariable String username) {
+        return userService.findAuthByUsername(username).map(ResponseEntity::ok);
     }
 }

@@ -116,10 +116,8 @@ export class DailyAttendanceComponent {
       this.empCardNo || undefined,
       fmt(this.dateFrom), fmt(this.dateTo), page
     ).subscribe(res => {
-      if (res.success) {
-        this.rows.set(res.data.content ?? []);
-        this.total.set(res.data.totalElements ?? 0);
-      }
+      this.rows.set(res.content ?? []);
+      this.total.set(res.totalElements ?? 0);
     });
   }
 

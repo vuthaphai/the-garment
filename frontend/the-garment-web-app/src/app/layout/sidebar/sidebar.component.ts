@@ -76,10 +76,10 @@ interface NavItem {
       <div class="sidebar-footer">
         <div class="user-avatar">{{ userInitial() }}</div>
         <div class="user-info">
-          <p class="user-name">{{ auth.currentUser()?.fullName }}</p>
-          <p class="user-role">{{ auth.currentUser()?.role }}</p>
+          <p class="user-name">{{ auth.currentUser()?.fullName || auth.currentUser()?.username }}</p>
+          <p class="user-role">{{ displayRole() }}</p>
         </div>
-        <button class="logout-btn" (click)="auth.logout()" title="Sign out">
+        <button class="logout-btn" (click)="logout()" title="Sign out">
           <mat-icon>logout</mat-icon>
         </button>
       </div>
@@ -277,9 +277,16 @@ interface NavItem {
   `]
 })
 export class SidebarComponent {
-  openMenus = signal<Set<string>>(new Set(['Human Resource']));
+  openMenus = signal<Set<string>>(new Set(['Overview', 'Human Resource']));
 
   navItems: NavItem[] = [
+    {
+      label: 'Overview',
+      icon: 'dashboard',
+      children: [
+        { label: 'Dashboard Home', route: '/dashboard', icon: 'space_dashboard' }
+      ]
+    },
     {
       label: 'Human Resource',
       icon: 'people',
@@ -295,11 +302,9 @@ export class SidebarComponent {
       label: 'Time Attendance',
       icon: 'schedule',
       children: [
-        { label: 'Shifts', route: '/attendance/shifts', icon: 'access_time' },
-        { label: 'Controllers', route: '/attendance/controllers', icon: 'router' },
+        { label: 'Fingerprint Devices', route: '/attendance/controllers', icon: 'router' },
         { label: 'Download Data', route: '/attendance/download', icon: 'cloud_download' },
-        { label: 'Daily Data', route: '/attendance/daily', icon: 'calendar_today' },
-        { label: 'Permissions', route: '/attendance/permissions', icon: 'approval' }
+        { label: 'Daily Data', route: '/attendance/daily', icon: 'calendar_today' }
       ]
     },
     { label: 'Payroll', icon: 'payments', route: '/payroll' },
@@ -308,7 +313,6 @@ export class SidebarComponent {
       label: 'Settings',
       icon: 'settings',
       children: [
-        { label: 'Company', route: '/settings/company', icon: 'business' },
         { label: 'Holidays', route: '/settings/holidays', icon: 'beach_access' }
       ]
     }
@@ -329,6 +333,14 @@ export class SidebarComponent {
   }
 
   userInitial() {
-    return this.auth.currentUser()?.fullName?.charAt(0)?.toUpperCase() ?? 'U';
+    return (this.auth.currentUser()?.fullName || this.auth.currentUser()?.username)?.charAt(0)?.toUpperCase() ?? 'U';
+  }
+
+  displayRole() {
+    return this.auth.currentUser()?.roles?.join(', ') || this.auth.currentUser()?.role || 'USER';
+  }
+
+  logout() {
+    this.auth.logout().subscribe();
   }
 }

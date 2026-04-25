@@ -248,7 +248,7 @@ export class EmployeeFormComponent implements OnInit {
           const emp = res.data;
           this.form.patchValue({ ...emp });
           this.contractArray.clear();
-          emp.contracts?.forEach(c =>
+          emp.contracts?.forEach((c: any) =>
             this.contractArray.push(this.fb.group({
               contractTypeId: [c.contractTypeId],
               fromDate: [c.fromDate], toDate: [c.toDate], months: [c.months]

@@ -23,45 +23,41 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
   template: `
     <div class="p-6">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="page-title">Controller Management</h1>
+        <h1 class="page-title">Fingerprint Devices</h1>
         <button mat-flat-button color="primary" (click)="openForm()">
-          <mat-icon>add</mat-icon> Add Controller
+          <mat-icon>add</mat-icon> Add Device
         </button>
       </div>
 
       <div class="space-y-4">
         @for (ctrl of controllers(); track ctrl.id) {
-          <mat-expansion-panel class="card !p-0 overflow-hidden">
+          <mat-expansion-panel class="card p-0! overflow-hidden">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <mat-icon class="mr-2 text-indigo-500">router</mat-icon>
-                {{ ctrl.controllerName }}
+                {{ ctrl.machineName || ctrl.name || ('Device #' + ctrl.id) }}
               </mat-panel-title>
-              <mat-panel-description>{{ ctrl.machines?.length ?? 0 }} machine(s)</mat-panel-description>
+              <mat-panel-description>{{ ctrl.location || ctrl.ipAddress || 'Fingerprint reader' }}</mat-panel-description>
             </mat-expansion-panel-header>
 
-            <!-- Machine list -->
             <div class="px-4 pb-4">
               <div class="bg-slate-50 rounded-lg overflow-hidden">
-                <table mat-table [dataSource]="ctrl.machines ?? []" class="w-full">
+                <table mat-table [dataSource]="[ctrl]" class="w-full">
                   <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef>Machine Name</th>
-                    <td mat-cell *matCellDef="let m">{{ m.machineName }}</td>
+                    <td mat-cell *matCellDef="let m">{{ m.machineName || m.name || 'Unnamed device' }}</td>
                   </ng-container>
                   <ng-container matColumnDef="ip">
                     <th mat-header-cell *matHeaderCellDef>IP Address</th>
-                    <td mat-cell *matCellDef="let m" class="font-mono">{{ m.ipAddress }}</td>
+                    <td mat-cell *matCellDef="let m" class="font-mono">{{ m.ipAddress || 'N/A' }}</td>
                   </ng-container>
                   <ng-container matColumnDef="type">
                     <th mat-header-cell *matHeaderCellDef>Type</th>
-                    <td mat-cell *matCellDef="let m">{{ m.machineType }}</td>
+                    <td mat-cell *matCellDef="let m">{{ m.machineType || m.status || 'Unknown' }}</td>
                   </ng-container>
                   <tr mat-header-row *matHeaderRowDef="machineCols"></tr>
                   <tr mat-row *matRowDef="let row; columns: machineCols;"></tr>
                 </table>
-                @if (!ctrl.machines?.length) {
-                  <p class="text-sm text-slate-400 text-center py-4">No machines configured</p>
-                }
               </div>
 
               <div class="flex gap-2 mt-3">
@@ -79,7 +75,7 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
           </mat-expansion-panel>
         }
         @if (controllers().length === 0) {
-          <div class="card text-center text-slate-400 py-12">No controllers configured</div>
+          <div class="card text-center text-slate-400 py-12">No fingerprint devices configured</div>
         }
       </div>
     </div>
@@ -98,26 +94,26 @@ export class ControllerListComponent implements OnInit {
   ngOnInit() { this.load(); }
 
   load() {
-    this.svc.getControllers().subscribe(res => {
-      if (res.success) this.controllers.set(res.data);
+    this.svc.getFingerPrinters().subscribe(res => {
+      this.controllers.set(res);
     });
   }
 
-  openForm() { this.notify.success('Controller form – use API for now'); }
-  editController(ctrl: any) { this.notify.success('Edit: ' + ctrl.controllerName); }
+  openForm() { this.notify.success('Device form is not wired yet. Use the API for create/update for now.'); }
+  editController(ctrl: any) { this.notify.success('Edit: ' + (ctrl.machineName || ctrl.name || ctrl.id)); }
 
   downloadData(ctrl: any) {
-    this.svc.downloadData(ctrl.id).subscribe({
-      next: res => this.notify.success(res.data ?? 'Download initiated'),
+    this.svc.downloadAttendanceData().subscribe({
+      next: res => this.notify.success(res ?? 'Download initiated'),
       error: () => this.notify.error('Download failed')
     });
   }
 
   confirmDelete(ctrl: any) {
     this.dialog.open(ConfirmDialogComponent, {
-      data: { title: 'Delete Controller', message: `Delete "${ctrl.controllerName}"?` }
+      data: { title: 'Delete Device', message: `Delete "${ctrl.machineName || ctrl.name || ctrl.id}"?` }
     }).afterClosed().subscribe(ok => {
-      if (ok) this.svc.deleteController(ctrl.id).subscribe({
+      if (ok) this.svc.deleteFingerPrinter(ctrl.id).subscribe({
         next: () => { this.notify.success('Deleted'); this.load(); },
         error: () => this.notify.error('Failed')
       });

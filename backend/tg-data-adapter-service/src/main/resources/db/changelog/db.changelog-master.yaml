@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/005-create-attendance-tables.sql
   - include:
       file: db/changelog/006-seed-data.sql
+  - include:
+      file: db/changelog/007-create-finger-printers.sql

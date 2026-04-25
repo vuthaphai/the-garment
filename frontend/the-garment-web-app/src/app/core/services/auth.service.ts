@@ -1,9 +1,10 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { ApiResponse, LoginRequest, LoginResponse, UserInfo } from '../models/auth.model';
+import { CurrentUserResponse, LoginRequest, LoginResponse, UserInfo } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,31 +18,54 @@ export class AuthService {
   readonly currentUser = computed(() => this._user());
   readonly token = computed(() => this._token());
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    if (this._token() && !this._user()) {
+      this.refreshCurrentUser().subscribe();
+    }
+  }
 
   login(request: LoginRequest) {
-    return this.http.post<ApiResponse<LoginResponse>>(
+    return this.http.post<LoginResponse>(
       `${environment.apiUrl}/auth/login`, request
     ).pipe(
-      tap(res => {
-        if (res.success) {
-          const data = res.data;
-          localStorage.setItem(this.TOKEN_KEY, data.token);
-          const user: UserInfo = {
-            userId: data.userId,
-            username: data.username,
-            fullName: data.fullName,
-            role: data.role
-          };
-          localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-          this._token.set(data.token);
-          this._user.set(user);
-        }
+      tap(data => {
+        localStorage.setItem(this.TOKEN_KEY, data.accessToken);
+        const user: UserInfo = {
+          username: data.username,
+          fullName: data.fullName || data.username,
+          role: data.role,
+          roles: data.roles ?? [data.role]
+        };
+        localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+        this._token.set(data.accessToken);
+        this._user.set(user);
       })
     );
   }
 
   logout() {
+    return this.http.post<void>(`${environment.apiUrl}/auth/logout`, {}).pipe(
+      catchError(() => of(void 0)),
+      tap(() => this.clearSession())
+    );
+  }
+
+  refreshCurrentUser(): Observable<UserInfo> {
+    return this.http.get<CurrentUserResponse>(`${environment.apiUrl}/auth/me`).pipe(
+      map(currentUser => ({
+        username: currentUser.username,
+        fullName: currentUser.username,
+        role: currentUser.roles?.[0] ?? 'USER',
+        roles: currentUser.roles ?? []
+      })),
+      tap(user => {
+        localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+        this._user.set(user);
+      })
+    );
+  }
+
+  private clearSession() {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     this._token.set(null);

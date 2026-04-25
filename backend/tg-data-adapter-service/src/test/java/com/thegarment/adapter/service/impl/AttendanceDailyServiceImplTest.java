@@ -55,7 +55,7 @@ class AttendanceDailyServiceImplTest {
         when(r2dbcEntityTemplate.count(any(), any(Class.class))).thenReturn(Mono.just(1L));
         when(select.matching(any()).all()).thenReturn(Flux.just(entity));
 
-        StepVerifier.create(attendanceDailyService.findPage(0, 10, "E-100"))
+        StepVerifier.create(attendanceDailyService.findPage(0, 10, "E-100", null, null))
                 .expectNextMatches(page -> page.totalElements() == 1
                         && page.content().size() == 1
                         && page.content().getFirst().empCardNo().equals("E-100")

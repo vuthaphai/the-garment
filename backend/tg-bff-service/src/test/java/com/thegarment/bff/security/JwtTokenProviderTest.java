@@ -2,6 +2,8 @@ package com.thegarment.bff.security;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JwtTokenProviderTest {
@@ -12,11 +14,11 @@ class JwtTokenProviderTest {
     void shouldGenerateAndParseAccessToken() {
         JwtTokenProvider provider = new JwtTokenProvider(SECRET, 60_000L, 120_000L);
 
-        String token = provider.generateAccessToken("admin", "ADMIN");
+        String token = provider.generateAccessToken("admin", List.of("ADMIN", "HR"));
 
         assertThat(provider.validateToken(token)).isTrue();
         assertThat(provider.getUsernameFromToken(token)).isEqualTo("admin");
-        assertThat(provider.getRoleFromToken(token)).isEqualTo("ADMIN");
+        assertThat(provider.getRolesFromToken(token)).containsExactly("ADMIN", "HR");
     }
 
     @Test

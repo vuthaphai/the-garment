@@ -26,10 +26,10 @@ public class JwtAuthenticationFilter implements WebFilter {
         String token = extractToken(exchange.getRequest());
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.getUsernameFromToken(token);
-            String role = jwtTokenProvider.getRoleFromToken(token);
+            List<String> roles = jwtTokenProvider.getRolesFromToken(token);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     username, null,
-                    role != null ? List.of(new SimpleGrantedAuthority("ROLE_" + role)) : List.of()
+                roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList()
             );
             return chain.filter(exchange)
                     .contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
